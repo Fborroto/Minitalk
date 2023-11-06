@@ -6,30 +6,48 @@
 #    By: fborroto <fborroto@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/13 16:06:21 by fborroto          #+#    #+#              #
-#    Updated: 2023/08/13 19:19:28 by fborroto         ###   ########.fr        #
+#    Updated: 2023/11/06 12:32:30 by fborroto         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SOURCES = server.c client.c
+NAME_C	=	client
+NAME_S	=	server
 
-OBJ = *.o
+SRCS_C	=	client.c ft_atoi.c
+SRCS_S	=	server.c ft_atoi.c
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+OBJS_C	=	${SRCS_C:.c=.o}
+OBJS_S	=	${SRCS_S:.c=.o}
 
-RM = rm -rf
+CC		=	gcc
+FLAGS	=	-Wall -Wextra -Werror
+RM		=	rm -f
+PRINTF	=	./ft_printf
+LIPRIN	=	ft_printf/libftprintf.a
 
-all :
-	@${CC} $(FLAGS) server.c -o server
-	@${RM} $(OBJ)
-	@${CC} $(FLAGS) client.c -o client
-	@${RM} $(OBJ)
+all:
+		make -C $(PRINTF)
+		${CC} ${FLAGS} ${SRCS_C} ${LIPRIN} -o ${NAME_C}
+		${CC} ${FLAGS} ${SRCS_S} ${LIPRIN} -o ${NAME_S}
 
-clean: 
-	@${RM} ${OBJ}
+client:
+		make -C $(PRINTF)
+		${CC} ${FLAGS} ${SRCS_C} ${LIPRIN} -o ${NAME_C}
+		
+server:
+		make -C $(PRINTF)
+		${CC} ${FLAGS} ${SRCS_S} ${LIPRIN} -o ${NAME_S}
 
-fclean: clean
-	@${RM} server
-	@${RM} client
+clean:
+		make clean -C ${PRINTF}
+		${RM} ${OBJS_C}
+		${RM} ${OBJS_S}
 
-re: fclean all
+fclean:	clean
+		make fclean -C ${PRINTF}
+		${RM} ${NAME_C}
+		${RM} ${NAME_S}
+		
+re:		fclean all
+
+.PHONY:	all clean fclean re
