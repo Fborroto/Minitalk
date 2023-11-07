@@ -6,7 +6,7 @@
 /*   By: fborroto <fborroto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:01:50 by fborroto          #+#    #+#             */
-/*   Updated: 2023/11/06 13:45:09 by fborroto         ###   ########.fr       */
+/*   Updated: 2023/11/07 23:35:52 by fborroto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ static void	sig_kill(int pid, char *str)
 				kill(pid, SIGUSR2);
 			else
 				kill(pid, SIGUSR1);
-			usleep(1000);
+			usleep(300);
 		}
 	}
 	bit = 8;
 	while (bit--)
 	{
 		kill(pid, SIGUSR1);
-		usleep(1000);
+		usleep(300);
 	}
 }
 
