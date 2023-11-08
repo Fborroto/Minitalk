@@ -6,13 +6,21 @@
 /*   By: fborroto <fborroto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 11:59:18 by fborroto          #+#    #+#             */
-/*   Updated: 2023/11/06 12:12:03 by fborroto         ###   ########.fr       */
+/*   Updated: 2023/11/08 12:14:08 by fborroto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static int	ft_isdigit(int c)
+void	handle_errors(char *error_msg)
+{
+	write(STDERR_FILENO, "Error: ", 7);
+	write(STDERR_FILENO, error_msg, ft_strlen(error_msg));
+	write(STDERR_FILENO, "\n", 1);
+	exit(EXIT_FAILURE);
+}
+
+int	ft_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
 }

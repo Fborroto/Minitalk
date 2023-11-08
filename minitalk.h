@@ -6,7 +6,7 @@
 /*   By: fborroto <fborroto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 11:58:07 by fborroto          #+#    #+#             */
-/*   Updated: 2023/11/06 12:53:22 by fborroto         ###   ########.fr       */
+/*   Updated: 2023/11/08 12:18:37 by fborroto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 # include <signal.h>
 # include <unistd.h>
 
-int	ft_atoi(const char *str);
-int	ft_strlen(const char *s);
+void		handle_errors(char *error_msg);
+int			ft_atoi(const char *str);
+int			ft_strlen(const char *s);
+int			ft_isdigit(int c);
 
 #endif

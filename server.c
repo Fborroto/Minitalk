@@ -6,36 +6,42 @@
 /*   By: fborroto <fborroto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:02:47 by fborroto          #+#    #+#             */
-/*   Updated: 2023/11/06 13:46:43 by fborroto         ###   ########.fr       */
+/*   Updated: 2023/11/08 12:36:43 by fborroto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static void	action(int sig, siginfo_t *info, void *context)
+void	bin_to_char(int signum, char *c)
+{
+	if (signum == SIGUSR1)
+		*c = (*c << 1) | 1;
+	else if (signum == SIGUSR2)
+		*c <<= 1;
+}
+
+void	action(int sig, siginfo_t *info, void *context)
 {
 	static int	bit;
+	static int	clientpid;
 	static char	c;
 
 	(void)context;
-	if (bit == 0)
-		c = 0;
-	c |= (sig == SIGUSR2);
-	bit++;
-	if (bit == 8)
+	clientpid = info->si_pid;
+	bin_to_char(sig, &c);
+	if (++bit == 8)
 	{
-		ft_printf("%c", c);
-		if (c == 0)
+		bit = 0;
+		if (!c)
 		{
-			kill(info->si_pid, SIGUSR2);
-			ft_printf("\n");
-			bit = 0;
+			kill(clientpid, SIGUSR1);
+			clientpid = 0;
 			return ;
 		}
-		bit = 0;
+		write(STDOUT_FILENO, &c, 1);
+		c = 0;
 	}
-	else
-		c <<= 1;
+	kill(clientpid, SIGUSR2);
 }
 
 int	main(void)
@@ -43,10 +49,13 @@ int	main(void)
 	struct sigaction	s_sigaction;
 
 	ft_printf("Server PID: %d\n", getpid());
-	s_sigaction.sa_sigaction = action;
+	sigemptyset(&s_sigaction.sa_mask);
 	s_sigaction.sa_flags = SA_SIGINFO;
-	sigaction(SIGUSR1, &s_sigaction, 0);
-	sigaction(SIGUSR2, &s_sigaction, 0);
+	s_sigaction.sa_sigaction = &action;
+	if (sigaction(SIGUSR1, &s_sigaction, NULL) == -1)
+		handle_errors("Failed to change SIGUSR1's behavior");
+	if (sigaction(SIGUSR2, &s_sigaction, NULL) == -1)
+		handle_errors("Failed to change SIGUSR2's behavior");
 	while (1)
 		pause();
 	return (0);
