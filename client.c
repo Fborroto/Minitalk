@@ -6,7 +6,7 @@
 /*   By: fborroto <fborroto@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:01:50 by fborroto          #+#    #+#             */
-/*   Updated: 2023/11/08 12:37:10 by fborroto         ###   ########.fr       */
+/*   Updated: 2023/11/09 15:12:46 by fborroto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ int	main(int argc, char **argv)
 	int					c;
 	pid_t				pid;
 
+	checker(argc, argv);
 	c = -1;
 	pid = ft_atoi(argv[1]);
-	checker(argc, argv);
 	signal.sa_handler = action;
 	sigemptyset(&signal.sa_mask);
 	signal.sa_flags = 0;
